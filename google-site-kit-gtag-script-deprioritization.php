@@ -96,12 +96,12 @@ add_filter(
 			$urls = array_filter(
 				$urls,
 				static function ( $url ): bool {
-					return 'www.googletagmanager.com' !== $url;
+					return is_string( $url ) && ! str_contains( $url, 'www.googletagmanager.com' ); // Note that wp_dependencies_unique_hosts() does not prefix with '//' but Site Kit does when filtering.
 				}
 			);
 		}
 		return $urls;
 	},
-	10,
+	100,
 	2
 );
