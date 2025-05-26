@@ -8,11 +8,15 @@ Tags:         performance
 
 ## Description ##
 
-This plugin moves the GTag script to the footer, adds `fetchpriority=low`, and eliminates the `dns-prefetch` resource hint to deprioritize to prevent it from impacting the critical rendering path. This is an extension to [Site Kit by Google](https://wordpress.org/plugins/google-site-kit/) plugin.
+This plugin deprioritizes the loading of the GTag script in the [Site Kit by Google](https://wordpress.org/plugins/google-site-kit/) plugin to attempt to reduce network contention with loading resources in the critical rendering path (e.g. the LCP element image). It deprioritizes the GTag script by:
+
+1. Adding `fetchpriority="low"` to the `script` tag.
+2. Moving the `script` tag from the `head` to the footer.
+3. Removing the `dns-prefetch` for `www.googletagmanager.com`.
 
 This does not primarily benefit Chrome since it already gives `async` scripts a priority of low. It does benefit Safari and Firefox, however, since they have a default medium/normal priority.
 
-In Chrome, the performance gain on a broadband connection is marginal:
+In Chrome, the performance gain on a broadband connection is marginal, as tested with [benchmark-web-vitals](https://github.com/GoogleChromeLabs/wpp-research/tree/main/cli#benchmark-web-vitals):
 
 ```bash
 npm run research -- benchmark-web-vitals -n 1000 -c "broadband" -o md --diff \
@@ -26,6 +30,23 @@ npm run research -- benchmark-web-vitals -n 1000 -c "broadband" -o md --diff \
 | LCP (median)      |    367 |  361.4 |     -5.60 |    -1.5% |
 | TTFB (median)     |   31.4 |   31.4 |      0.00 |     0.0% |
 | LCP-TTFB (median) |  335.5 | 329.95 |     -5.55 |    -1.7% |
+
+And on a Fast 4G connection, the improvement in Chrome is even less remarkable:
+
+```bash
+npm run research -- benchmark-web-vitals -n 250 -c "Fast 4G" -o md --diff \
+  --url "http://localhost:10023/bison/?disable_site_kit_gtag_script_deprioritization=1" \
+  --url "http://localhost:10023/bison/"
+```
+
+| Metric            | Before |  After | Diff (ms) | Diff (%) |
+|:------------------|-------:|-------:|----------:|---------:|
+| FCP (median)      | 406.95 | 403.25 |     -3.70 |    -0.9% |
+| LCP (median)      |    573 |  572.8 |     -0.20 |    -0.0% |
+| TTFB (median)     |   32.3 |   32.4 |     +0.10 |    +0.3% |
+| LCP-TTFB (median) | 540.75 | 539.95 |     -0.80 |    -0.1% |
+
+I tried briefly to add Firefox to benchmark-web-vitals, but some of the Puppeteer APIs being used aren't supported yet.
 
 Here is a diff of the change this applies:
 
@@ -74,6 +95,8 @@ Here is a diff of the change this applies:
    </body>
  </html>
 ```
+
+I intend to propose this change for inclusion in Site Kit.
 
 ## Installation ##
 
