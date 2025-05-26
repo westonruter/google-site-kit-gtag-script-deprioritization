@@ -14,7 +14,7 @@ This plugin deprioritizes the loading of the GTag script in the [Site Kit by Goo
 2. Moving the `script` tag from the `head` to the footer.
 3. Removing the `dns-prefetch` for `www.googletagmanager.com`.
 
-This does not primarily benefit Chrome since it already gives `async` scripts a priority of low. It does benefit Safari and Firefox, however, since they have a default medium/normal priority.
+This does not primarily benefit Chrome since that browser already gives `async` scripts a priority of low. It does benefit Safari and Firefox, however, since they have a default medium/normal priority.
 
 In Chrome, the performance gain on a broadband connection is marginal, as tested with [benchmark-web-vitals](https://github.com/GoogleChromeLabs/wpp-research/tree/main/cli#benchmark-web-vitals):
 
