@@ -46,7 +46,7 @@ npm run research -- benchmark-web-vitals -n 250 -c "Fast 4G" -o md --diff \
 | TTFB (median)     |   32.3 |   32.4 |     +0.10 |    +0.3% |
 | LCP-TTFB (median) | 540.75 | 539.95 |     -0.80 |    -0.1% |
 
-I tried briefly to add Firefox to benchmark-web-vitals, but some of the Puppeteer APIs being used aren't supported yet.
+To see the real benchmark improvements I would use Firefox. I did try briefly to [add Firefox to benchmark-web-vitals](https://github.com/GoogleChromeLabs/wpp-research/pull/191), but some of the Puppeteer APIs being used aren't supported yet.
 
 Here is a diff of the change this applies:
 
