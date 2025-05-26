@@ -11,7 +11,7 @@ Tags:         performance
 This plugin deprioritizes the loading of the GTag script in the [Site Kit by Google](https://wordpress.org/plugins/google-site-kit/) plugin to attempt to reduce network contention with loading resources in the critical rendering path (e.g. the LCP element image). It deprioritizes the GTag script by:
 
 1. Adding `fetchpriority="low"` to the `script` tag.
-2. Moving the `script` tag from the `head` to the footer.
+2. Moving the script tag from the `head` to the footer (but keeping the `dataLayer` and `gtag()` inline script in the `head`).
 3. Removing the `dns-prefetch` for `www.googletagmanager.com`.
 
 This does not primarily benefit Chrome since that browser already gives `async` scripts a priority of low. It does benefit Safari and Firefox, however, since they have a default medium/normal priority.
@@ -113,7 +113,7 @@ Here is a diff of the change this applies:
  </html>
 ```
 
-I intend to propose this change for inclusion in Site Kit.
+I've [proposed](https://github.com/google/site-kit-wp/issues/10825) these changes for inclusion in Site Kit.
 
 ## Installation ##
 
