@@ -8,9 +8,9 @@ Tags:         performance
 
 ## Description ##
 
-This plugin moves GTag script to the footer to further deprioritize to prevent impacting the critical rendering path. This is an extension to Site Kit by Google.
+This plugin moves the GTag script to the footer, adds `fetchpriority=low`, and eliminates the `dns-prefetch` resource hint to deprioritize to prevent it from impacting the critical rendering path. This is an extension to [Site Kit by Google](https://wordpress.org/plugins/google-site-kit/) plugin.
 
-While the `google_gtagjs` script is already registered as being `async` and Chrome gives it a low fetch priority, other browsers do not automatically deprioritize async scripts; namely Safari and Firefox give such scripts a medium/normal priority. So in addition to moving the GTag script to the footer, it also adds `fetchpriority=low` to the script. 
+This does not primarily benefit Chrome since it already gives `async` scripts a priority of low. It does benefit Safari and Firefox, however, since they have a default medium/normal priority.
 
 ## Installation ##
 
