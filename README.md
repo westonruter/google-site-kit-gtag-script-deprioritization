@@ -12,6 +12,21 @@ This plugin moves the GTag script to the footer, adds `fetchpriority=low`, and e
 
 This does not primarily benefit Chrome since it already gives `async` scripts a priority of low. It does benefit Safari and Firefox, however, since they have a default medium/normal priority.
 
+In Chrome, the performance gain on a broadband connection is marginal:
+
+```bash
+npm run research -- benchmark-web-vitals -n 1000 -c "broadband" -o md --diff \
+  --url "http://localhost:10023/bison/?disable_site_kit_gtag_script_deprioritization=1" \
+  --url "http://localhost:10023/bison/"
+```
+
+| Metric            | Before |  After | Diff (ms) | Diff (%) |
+|:------------------|-------:|-------:|----------:|---------:|
+| FCP (median)      |  137.5 |  138.1 |     +0.60 |    +0.4% |
+| LCP (median)      |    367 |  361.4 |     -5.60 |    -1.5% |
+| TTFB (median)     |   31.4 |   31.4 |      0.00 |     0.0% |
+| LCP-TTFB (median) |  335.5 | 329.95 |     -5.55 |    -1.7% |
+
 Here is a diff of the change this applies:
 
 ```diff
