@@ -16,7 +16,24 @@ This plugin deprioritizes the loading of the GTag script in the [Site Kit by Goo
 
 This does not primarily benefit Chrome since that browser already gives `async` scripts a priority of low. It does benefit Safari and Firefox, however, since they have a default medium/normal priority.
 
-In Chrome, the performance gain on a broadband connection is marginal, as tested with [benchmark-web-vitals](https://github.com/GoogleChromeLabs/wpp-research/tree/main/cli#benchmark-web-vitals):
+Here is the performance impact in Firefox using a patched version of [benchmark-web-vitals](https://github.com/GoogleChromeLabs/wpp-research/tree/main/cli#benchmark-web-vitals) with [Firefox support](https://github.com/GoogleChromeLabs/wpp-research/pull/191):
+
+```bash
+npm run research -- benchmark-web-vitals -n 250 -o md --diff -b firefox \
+  --url "http://localhost:10023/bison/?disable_site_kit_gtag_script_deprioritization=1" \
+  --url "http://localhost:10023/bison/" 
+```
+
+| URL               | Before | After | Diff (ms) | Diff (%) |
+|:------------------|-------:|------:|----------:|---------:|
+| FCP (median)      |     75 |    74 |     -1.00 |    -1.3% |
+| LCP (median)      |     76 |    75 |     -1.00 |    -1.3% |
+| TTFB (median)     |     38 |    38 |      0.00 |     0.0% |
+| LCP-TTFB (median) |     41 |    40 |     -1.00 |    -2.4% |
+
+Note that I wasn't able to emulate a slower network connection since this isn't supported.
+
+In Chrome, the performance gain on a broadband connection is marginal, as tested with:
 
 ```bash
 npm run research -- benchmark-web-vitals -n 1000 -c "broadband" -o md --diff \
