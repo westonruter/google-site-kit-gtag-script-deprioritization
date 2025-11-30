@@ -1,7 +1,7 @@
 # Site Kit GTag Script Deprioritization #
 
 Contributors: [westonruter](https://profile.wordpress.org/westonruter)  
-Tested up to: 6.8  
+Tested up to: 6.9  
 Stable tag:   0.1.0  
 License:      [GPLv2](https://www.gnu.org/licenses/gpl-2.0.html) or later  
 Tags:         performance
